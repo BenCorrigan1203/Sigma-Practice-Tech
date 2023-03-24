@@ -13,3 +13,7 @@ def import_bag():
     'H':2, 'V':2, 'W':2, 'Y':2,
     'K':1, 'J':1, 'X':1, 'Q':1, 'Z':1
 }
+
+@pytest.fixture
+def test_rack():
+    return ["A", "B", "R", "L", "E", "L", "T"]

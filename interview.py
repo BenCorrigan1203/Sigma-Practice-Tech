@@ -1,4 +1,5 @@
 import random
+import copy
 
 letter_points = {
     "A": 1, "B": 3, "C": 3, "D": 2, "E": 1, "F": 4, "G": 2, "H": 4, "I": 1, "J": 8, "K": 5, "L": 1, "M": 3, "N": 1, "O": 1, "P": 3, "Q": 10, "R": 1, "S": 1, "T": 1, "U": 1, "V": 4, "W": 4, "X": 8, "Y": 4, "Z": 10
@@ -41,7 +42,31 @@ def create_rack(bag: dict, seed: int = 0) -> list:
     return rack
 
 
+def is_valid_word(word: str, rack: list) -> bool:
+    test_rack = copy.deepcopy(rack)
+    for letter in word:
+        if letter.upper() not in test_rack:
+            return False
+        test_rack.remove(letter.upper())
+    print(test_rack)
+    print(rack)
+    return True
+        
+
+def get_valid_words_in_rack(rack: list) -> dict:
+    valid_words = {"Length 1": ["chicken"], "Length 2": [], "Length 3": [], "Length 4": [], "Length 5": [], "Length 6": [], "Length 7": []}
+    with open("dictionary.txt", mode="r", encoding="utf-8") as dictionary:
+        print(rack)
+        for word in dictionary:
+            if is_valid_word(word.strip(), rack):
+                print(word)
+                valid_words[f"Length {len(word)}"].append(word)
+    return valid_words
+
+
 if __name__ == "__main__":
-    print(bag)
-    create_rack(bag, 123)
-    print(bag)
+    rack = create_rack(bag, 123)
+    words = get_valid_words_in_rack(rack)
+    for length in list(words.keys()):
+        print(len(words[length]))
+    
