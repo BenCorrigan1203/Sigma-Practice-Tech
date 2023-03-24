@@ -48,25 +48,46 @@ def is_valid_word(word: str, rack: list) -> bool:
         if letter.upper() not in test_rack:
             return False
         test_rack.remove(letter.upper())
-    print(test_rack)
-    print(rack)
     return True
         
 
 def get_valid_words_in_rack(rack: list) -> dict:
-    valid_words = {"Length 1": ["chicken"], "Length 2": [], "Length 3": [], "Length 4": [], "Length 5": [], "Length 6": [], "Length 7": []}
+    valid_words = {"Length 1": [], "Length 2": [], "Length 3": [], "Length 4": [], "Length 5": [], "Length 6": [], "Length 7": []}
     with open("dictionary.txt", mode="r", encoding="utf-8") as dictionary:
-        print(rack)
         for word in dictionary:
             if is_valid_word(word.strip(), rack):
-                print(word)
-                valid_words[f"Length {len(word)}"].append(word)
+                valid_words[f"Length {len(word)}"].append(word.strip())
     return valid_words
 
 
+def find_longest_valid_word(rack: list) -> str:
+    valid_words = get_valid_words_in_rack(rack)
+    for i in range(7, 0, -1):
+        if valid_words[f"Length {i}"]:
+            return valid_words[f"Length {i}"]
+        valid_words = get_valid_words_in_rack(rack)
+
+
+def find_highest_scoring_word(rack: list) -> dict:
+    valid_words = get_valid_words_in_rack(rack)
+    highest_scorers = {}
+    for word_length in valid_words.values():
+        for word in word_length:
+            score = word_points(word)
+            if not highest_scorers:
+                highest_scorers[word] = score
+            elif score == list(highest_scorers.values())[0]:
+                highest_scorers[word] = score
+            elif score > list(highest_scorers.values())[0]:
+                highest_scorers = {word: score}
+    return highest_scorers
+            
+
+
 if __name__ == "__main__":
-    rack = create_rack(bag, 123)
+    rack = create_rack(bag)
     words = get_valid_words_in_rack(rack)
-    for length in list(words.keys()):
-        print(len(words[length]))
+
+    print(find_longest_valid_word(rack))
+    print(find_highest_scoring_word(rack))
     
