@@ -1,0 +1,2 @@
+The interview file contains a small snippet of a scrabble game
+If you run the file it will generate a rack of 7 random letters from a scrabble bag and return the longest possible words that can be made from those letters, the highest possible scrabble score and the highest possible scrabble score using triple letters
